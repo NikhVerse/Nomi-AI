@@ -11,8 +11,10 @@ import {
   User as UserIcon,
   Loader2,
   AlertCircle,
-  MessageSquare
+  MessageSquare,
+  Cpu
 } from 'lucide-react';
+
 import { PromptInspectorModal } from '../components/prompt/PromptInspectorModal';
 
 const renderInlineFormattedText = (text: string) => {
@@ -114,8 +116,18 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isInspectorOpen, setIsInspectorOpen] = useState(false);
-  
+  const [activeModelInfo, setActiveModelInfo] = useState<{ provider: string; model: string } | null>(null);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Load active local model info
+  useEffect(() => {
+    apiRequest<any>('/models/status')
+      .then((status) => {
+        setActiveModelInfo({ provider: status.active_provider, model: status.active_model });
+      })
+      .catch(() => {});
+  }, []);
 
   // Auto-scroll messages
   useEffect(() => {
@@ -403,6 +415,19 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
           </div>
 
           <div className="flex items-center space-x-2">
+            {activeModelInfo && (
+              <span
+                className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold border ${
+                  activeModelInfo.provider === 'ollama'
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    : 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                }`}
+                title="Free & Local Model Engine (No API key required)"
+              >
+                <Cpu className="w-3 h-3" />
+                <span>{activeModelInfo.provider === 'ollama' ? `Local Ollama (${activeModelInfo.model})` : 'Offline Engine'}</span>
+              </span>
+            )}
             <button
               id="chat-view-prompt-btn"
               onClick={() => setIsInspectorOpen(true)}

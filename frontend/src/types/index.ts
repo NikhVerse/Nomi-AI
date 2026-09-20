@@ -73,3 +73,37 @@ export interface Evaluation {
   feedback: string;
   created_at: string;
 }
+
+export interface OllamaModel {
+  name: string;
+  size: number;
+  modified_at?: string;
+}
+
+export interface ModelStatus {
+  active_provider: 'ollama' | 'local_openai' | 'builtin_local' | 'gemini';
+  active_model: string;
+  active_host: string;
+  ollama: {
+    connected: boolean;
+    version: string;
+    host: string;
+    models: OllamaModel[];
+  };
+  builtin_local: {
+    available: boolean;
+    description: string;
+  };
+  gemini: {
+    configured: boolean;
+  };
+}
+
+export interface PopularModel {
+  name: string;
+  label: string;
+  size: string;
+  description: string;
+  recommended: boolean;
+}
+

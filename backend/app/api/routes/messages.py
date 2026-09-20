@@ -6,11 +6,11 @@ from app.db.database import get_db
 from app.db.models import User, Conversation, Message, Persona, PromptVersion
 from app.schemas.message import MessageCreate, MessageResponse
 from app.services.prompt.compiler import PromptCompiler
-from app.services.ai.gemini import GeminiProvider
+from app.services.ai.factory import get_ai_provider
 from app.core.dependencies import get_current_user, verify_ownership
 
 router = APIRouter(prefix="/api/conversations/{conversation_id}/messages", tags=["Messages"])
-ai_provider = GeminiProvider()
+
 
 @router.get("", response_model=List[MessageResponse])
 def get_messages(
@@ -72,8 +72,9 @@ async def send_message(
         for m in all_past_messages
     ]
 
-    # 3. Call AI provider with system prompt instruction
+    # 3. Call active AI provider (Local Ollama, Local OpenAI, Built-in, or Gemini)
     try:
+        ai_provider = get_ai_provider()
         assistant_reply_text = await ai_provider.generate_response(
             system_prompt=system_prompt,
             messages=history_payload
@@ -83,6 +84,7 @@ async def send_message(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"We couldn't generate a response: {str(e)}"
         )
+
 
     # 4. Save assistant response
     assistant_msg = Message(

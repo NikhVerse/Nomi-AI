@@ -15,6 +15,13 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: Optional[str] = None
     FRONTEND_URL: str = "http://localhost:5173"
 
+    # Local & Free Model Settings (Zero API key needed)
+    DEFAULT_AI_PROVIDER: str = "ollama"  # "ollama", "local_openai", "builtin_local", "gemini"
+    OLLAMA_HOST: str = "http://127.0.0.1:11434"
+    OLLAMA_MODEL: str = "qwen2.5:0.5b"
+    LOCAL_OPENAI_URL: str = "http://127.0.0.1:1234/v1"
+    LOCAL_OPENAI_MODEL: str = "default"
+
     model_config = SettingsConfigDict(
         env_file=str(BASE_DIR / ".env"),
         env_file_encoding="utf-8",

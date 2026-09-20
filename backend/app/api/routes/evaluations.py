@@ -5,13 +5,12 @@ from app.db.database import get_db
 from app.db.models import User, Persona, Evaluation, PromptVersion
 from app.schemas.evaluation import EvaluationCreate, EvaluationResponse
 from app.services.prompt.compiler import PromptCompiler
-from app.services.ai.gemini import GeminiProvider
+from app.services.ai.factory import get_ai_provider
 from app.services.evaluation.evaluator import PersonaEvaluator
 from app.core.dependencies import get_current_user, verify_ownership
 
 router = APIRouter(prefix="/api/evaluations", tags=["Evaluations"])
-ai_provider = GeminiProvider()
-evaluator = PersonaEvaluator(ai_provider=ai_provider)
+
 
 @router.post("", response_model=EvaluationResponse, status_code=status.HTTP_201_CREATED)
 async def run_evaluation(
@@ -31,8 +30,10 @@ async def run_evaluation(
     ).order_by(PromptVersion.version.desc()).first()
     system_prompt = latest_pv.system_prompt if latest_pv else PromptCompiler.compile(persona)
 
-    # 2. Generate persona response to test case
+    # 2. Generate persona response to test case using active provider
     try:
+        ai_provider = get_ai_provider()
+        evaluator = PersonaEvaluator(ai_provider=ai_provider)
         persona_response = await ai_provider.generate_response(
             system_prompt=system_prompt,
             messages=[{"role": "user", "content": eval_in.test_case.strip()}],
@@ -50,6 +51,7 @@ async def run_evaluation(
         test_case=eval_in.test_case.strip(),
         response_text=persona_response
     )
+
 
     # 4. Save evaluation run to database
     eval_record = Evaluation(
