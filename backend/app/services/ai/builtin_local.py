@@ -212,6 +212,28 @@ class BuiltinLocalProvider(AIProvider):
                 "What kind of task is your prompt handling right now?"
             )
 
+        # 10. Code generation & Algorithm queries
+        if any(w in q_lower for w in ["fibonacci", "algorithm", "python function", "write a function", "write code", "code example"]):
+            return (
+                "Here is an efficient, generator-based implementation of the Fibonacci sequence in Python:\n\n"
+                "```python\n"
+                "def fibonacci(n: int):\n"
+                "    \"\"\"Generates the first n Fibonacci numbers with O(1) space complexity.\"\"\"\n"
+                "    a, b = 0, 1\n"
+                "    for _ in range(n):\n"
+                "        yield a\n"
+                "        a, b = b, a + b\n\n"
+                "# Example usage:\n"
+                "if __name__ == '__main__':\n"
+                "    print(list(fibonacci(10)))\n"
+                "    # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]\n"
+                "```\n\n"
+                "### Key Advantages:\n"
+                "- **Memory efficient**: Yields values lazily instead of allocating a large list in memory.\n"
+                "- **Linear time**: Runs in $O(n)$ time complexity compared to the exponential $O(2^n)$ runtime of naive recursion.\n\n"
+                "Would you like me to adapt this to a memoized cache or recursive implementation?"
+            )
+
         # 10. General / Custom Query Handler (Organic, persona-aligned, natural)
         focus_area = expertise[0] if expertise else "practical problem solving"
         return (

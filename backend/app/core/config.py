@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:5173"
 
     # Local & Free Model Settings (Zero API key needed)
-    DEFAULT_AI_PROVIDER: str = "ollama"  # "ollama", "local_openai", "builtin_local", "gemini"
+    DEFAULT_AI_PROVIDER: str = "builtin_local"  # 100% Free out-of-the-box engine (zero setup)
     OLLAMA_HOST: str = "http://127.0.0.1:11434"
     OLLAMA_MODEL: str = "qwen2.5:0.5b"
     LOCAL_OPENAI_URL: str = "http://127.0.0.1:1234/v1"

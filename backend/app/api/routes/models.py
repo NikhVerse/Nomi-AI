@@ -14,6 +14,42 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/models", tags=["AI Models & Providers"])
 
 UNIVERSAL_MODEL_CATALOG = [
+    # Built-in Local Offline Engine (Default Free Model)
+    {
+        "name": "builtin-dialogue",
+        "provider": "builtin_local",
+        "provider_name": "Offline Engine",
+        "model": "builtin-dialogue",
+        "label": "Built-in Free Engine (Default)",
+        "tag": "Free & Offline",
+        "badge": "Default (Zero Keys)",
+        "requires_key": False,
+        "is_default": True,
+        "description": "Built-in natural dialogue engine. 100% Free, zero keys, zero setup, completely offline."
+    },
+    # Ollama Local (Free Open Weights)
+    {
+        "name": "llama3.2:1b",
+        "provider": "ollama",
+        "provider_name": "Local Ollama",
+        "model": "llama3.2:1b",
+        "label": "Ollama Llama 3.2 (1B)",
+        "tag": "Free & Local",
+        "badge": "Private & Free",
+        "requires_key": False,
+        "description": "Runs completely locally on your hardware with 0 network calls."
+    },
+    {
+        "name": "qwen2.5:0.5b",
+        "provider": "ollama",
+        "provider_name": "Local Ollama",
+        "model": "qwen2.5:0.5b",
+        "label": "Ollama Qwen 2.5 (0.5B)",
+        "tag": "Free & Local",
+        "badge": "Ultra Lightweight",
+        "requires_key": False,
+        "description": "Runs on any laptop GPU/CPU with instantaneous latency."
+    },
     # Google Gemini
     {
         "provider": "gemini",
@@ -164,41 +200,6 @@ UNIVERSAL_MODEL_CATALOG = [
         "requires_key": True,
         "key_param": "perplexity_api_key",
         "description": "Factual conversational model with built-in search grounding."
-    },
-    # Ollama Local
-    {
-        "name": "llama3.2:1b",
-        "provider": "ollama",
-        "provider_name": "Local Ollama",
-        "model": "llama3.2:1b",
-        "label": "Ollama Llama 3.2 (1B)",
-        "tag": "Local",
-        "badge": "Private & Free",
-        "requires_key": False,
-        "description": "Runs completely locally on your hardware with 0 network calls."
-    },
-    {
-        "name": "qwen2.5:0.5b",
-        "provider": "ollama",
-        "provider_name": "Local Ollama",
-        "model": "qwen2.5:0.5b",
-        "label": "Ollama Qwen 2.5 (0.5B)",
-        "tag": "Local",
-        "badge": "Ultra Lightweight",
-        "requires_key": False,
-        "description": "Runs on any laptop GPU/CPU with instantaneous latency."
-    },
-    # Built-in Local Offline Engine
-    {
-        "name": "builtin-dialogue",
-        "provider": "builtin_local",
-        "provider_name": "Offline Engine",
-        "model": "builtin-dialogue",
-        "label": "Built-in Offline Engine",
-        "tag": "Offline",
-        "badge": "Zero Setup",
-        "requires_key": False,
-        "description": "Built-in natural dialogue engine. No API keys, zero downloads, 100% offline."
     }
 ]
 

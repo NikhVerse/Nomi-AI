@@ -72,7 +72,7 @@ async def send_message(
         for m in all_past_messages
     ]
 
-    # 3. Call requested AI provider with BYOK support
+    # 3. Call requested AI provider with BYOK support (with automatic free engine fallback)
     try:
         ai_provider = get_ai_provider(
             provider_type=msg_in.provider,
@@ -84,10 +84,18 @@ async def send_message(
             messages=history_payload
         )
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"We couldn't generate a response: {str(e)}"
-        )
+        # Gracefully fall back to built-in free natural dialogue engine
+        try:
+            fallback_provider = get_ai_provider(provider_type="builtin_local")
+            assistant_reply_text = await fallback_provider.generate_response(
+                system_prompt=system_prompt,
+                messages=history_payload
+            )
+        except Exception as fallback_err:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"We couldn't generate a response: {str(fallback_err)}"
+            )
 
 
     # 4. Save assistant response

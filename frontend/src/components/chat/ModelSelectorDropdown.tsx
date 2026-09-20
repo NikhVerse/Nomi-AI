@@ -26,9 +26,9 @@ export const ModelSelectorDropdown: React.FC<ModelSelectorDropdownProps> = ({
       .then((data) => {
         setCatalog(data);
         if (!selectedModel && data.length > 0) {
-          // Default to Gemini 2.0 Flash or Built-in Local
-          const gemini = data.find((m) => m.provider === 'gemini');
-          onSelectModel(gemini || data[0]);
+          // Default to free models that require zero keys
+          const defaultFree = data.find((m) => !m.requires_key) || data[0];
+          onSelectModel(defaultFree);
         }
       })
       .catch((err) => console.error('Failed to load models catalog', err));
@@ -55,11 +55,11 @@ export const ModelSelectorDropdown: React.FC<ModelSelectorDropdownProps> = ({
         type="button"
         id="model-selector-btn"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-800 hover:bg-slate-50 hover:border-slate-300 shadow-2xs transition-colors"
+        className="inline-flex items-center space-x-2 px-2.5 py-1.5 rounded-xl text-sm font-semibold text-neutral-800 hover:bg-neutral-100 transition-colors"
       >
         <div className="flex items-center space-x-1.5">
-          <Zap className="w-3.5 h-3.5 text-indigo-600" />
-          <span className="font-bold text-slate-900">
+          <Zap className="w-4 h-4 text-indigo-600" />
+          <span className="font-bold text-neutral-900 text-sm">
             {selectedModel ? selectedModel.label : 'Select Model'}
           </span>
           {selectedModel && (
@@ -74,7 +74,7 @@ export const ModelSelectorDropdown: React.FC<ModelSelectorDropdownProps> = ({
             </span>
           )}
         </div>
-        <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+        <ChevronDown className="w-3.5 h-3.5 text-neutral-400" />
       </button>
 
       {isOpen && (
