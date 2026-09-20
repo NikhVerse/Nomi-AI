@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from app.core.config import settings
 from app.db.database import engine, Base
 import app.db.models  # Ensure models are discovered
-from app.api.routes import auth, personas, conversations, messages, evaluations, models
+from app.api.routes import auth, personas, conversations, messages, evaluations, models, images
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -43,6 +43,7 @@ app.include_router(conversations.router)
 app.include_router(messages.router)
 app.include_router(evaluations.router)
 app.include_router(models.router)
+app.include_router(images.router)
 
 
 @app.get("/health", tags=["Health"])

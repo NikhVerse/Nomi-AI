@@ -15,8 +15,14 @@ import {
   Download,
   RefreshCw,
   Zap,
-  CheckCircle2
+  CheckCircle2,
+  Database,
+  Key,
+  ExternalLink,
+  ShieldCheck
 } from 'lucide-react';
+import type { BYOKApiKeys } from '../types';
+import { getStoredApiKeys, saveStoredApiKeys } from '../lib/keys';
 
 export const Settings: React.FC = () => {
   const { user, updateUser, logout } = useAuth();
@@ -67,10 +73,22 @@ export const Settings: React.FC = () => {
     }
   };
 
+  // BYOK API Keys State
+  const [byokKeys, setByokKeys] = useState<BYOKApiKeys>({});
+  const [byokSaved, setByokSaved] = useState(false);
+
   useEffect(() => {
     loadModelStatus();
     loadPopularModels();
+    setByokKeys(getStoredApiKeys());
   }, []);
+
+  const handleSaveByokKeys = (e: React.FormEvent) => {
+    e.preventDefault();
+    saveStoredApiKeys(byokKeys);
+    setByokSaved(true);
+    setTimeout(() => setByokSaved(false), 3000);
+  };
 
   const handleSaveModelSettings = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -483,6 +501,195 @@ export const Settings: React.FC = () => {
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Bring Your Own Key (BYOK) Section */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-6">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-200/60 flex items-center justify-center text-indigo-600">
+              <Key className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-slate-900">Custom API Keys (BYOK)</h2>
+              <p className="text-xs text-slate-500">Provide personal API keys for Gemini, OpenAI, Claude, DeepSeek, Groq, Mistral & OpenRouter</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-1.5 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-full font-medium">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Encrypted Client Storage</span>
+          </div>
+        </div>
+
+        {byokSaved && (
+          <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs rounded-xl flex items-center space-x-2">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span>API keys updated securely in your browser. All chats will now use these credentials.</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSaveByokKeys} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Google Gemini */}
+            <div className="p-3.5 bg-slate-50/50 border border-slate-200 rounded-xl space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800">Google Gemini API Key</label>
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-[11px] text-indigo-600 hover:underline inline-flex items-center space-x-0.5">
+                  <span>Get Free Key</span>
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </div>
+              <input
+                type="password"
+                value={byokKeys.gemini_api_key || ''}
+                onChange={(e) => setByokKeys({ ...byokKeys, gemini_api_key: e.target.value.trim() || undefined })}
+                placeholder="AIzaSy..."
+                className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+              <p className="text-[10px] text-slate-400">Powers Gemini 2.0 Flash & Gemini 1.5 Pro</p>
+            </div>
+
+            {/* OpenAI */}
+            <div className="p-3.5 bg-slate-50/50 border border-slate-200 rounded-xl space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800">OpenAI API Key</label>
+                <a href="https://platform.openai.com/api-keys" target="_blank" rel="noreferrer" className="text-[11px] text-indigo-600 hover:underline inline-flex items-center space-x-0.5">
+                  <span>Get Key</span>
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </div>
+              <input
+                type="password"
+                value={byokKeys.openai_api_key || ''}
+                onChange={(e) => setByokKeys({ ...byokKeys, openai_api_key: e.target.value.trim() || undefined })}
+                placeholder="sk-proj-..."
+                className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+              <p className="text-[10px] text-slate-400">Powers GPT-4o, o3-mini, and DALL-E 3 image generation</p>
+            </div>
+
+            {/* Anthropic Claude */}
+            <div className="p-3.5 bg-slate-50/50 border border-slate-200 rounded-xl space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800">Anthropic Claude API Key</label>
+                <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer" className="text-[11px] text-indigo-600 hover:underline inline-flex items-center space-x-0.5">
+                  <span>Get Key</span>
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </div>
+              <input
+                type="password"
+                value={byokKeys.anthropic_api_key || ''}
+                onChange={(e) => setByokKeys({ ...byokKeys, anthropic_api_key: e.target.value.trim() || undefined })}
+                placeholder="sk-ant-..."
+                className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+              <p className="text-[10px] text-slate-400">Powers Claude 3.5 Sonnet & Claude 3.5 Haiku</p>
+            </div>
+
+            {/* DeepSeek */}
+            <div className="p-3.5 bg-slate-50/50 border border-slate-200 rounded-xl space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800">DeepSeek API Key</label>
+                <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noreferrer" className="text-[11px] text-indigo-600 hover:underline inline-flex items-center space-x-0.5">
+                  <span>Get Key</span>
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </div>
+              <input
+                type="password"
+                value={byokKeys.deepseek_api_key || ''}
+                onChange={(e) => setByokKeys({ ...byokKeys, deepseek_api_key: e.target.value.trim() || undefined })}
+                placeholder="sk-..."
+                className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+              <p className="text-[10px] text-slate-400">Ultra low-cost DeepSeek V3 and R1 reasoning models</p>
+            </div>
+
+            {/* Groq */}
+            <div className="p-3.5 bg-slate-50/50 border border-slate-200 rounded-xl space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800">Groq API Key</label>
+                <a href="https://console.groq.com/keys" target="_blank" rel="noreferrer" className="text-[11px] text-indigo-600 hover:underline inline-flex items-center space-x-0.5">
+                  <span>Get Free Key</span>
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </div>
+              <input
+                type="password"
+                value={byokKeys.groq_api_key || ''}
+                onChange={(e) => setByokKeys({ ...byokKeys, groq_api_key: e.target.value.trim() || undefined })}
+                placeholder="gsk_..."
+                className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+              <p className="text-[10px] text-slate-400">Ultra-fast 500+ tok/s inference with Llama 3.3 70B</p>
+            </div>
+
+            {/* OpenRouter */}
+            <div className="p-3.5 bg-slate-50/50 border border-slate-200 rounded-xl space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800">OpenRouter API Key</label>
+                <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer" className="text-[11px] text-indigo-600 hover:underline inline-flex items-center space-x-0.5">
+                  <span>Get Key</span>
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </div>
+              <input
+                type="password"
+                value={byokKeys.openrouter_api_key || ''}
+                onChange={(e) => setByokKeys({ ...byokKeys, openrouter_api_key: e.target.value.trim() || undefined })}
+                placeholder="sk-or-..."
+                className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+              <p className="text-[10px] text-slate-400">Unified gateway to 100+ open and proprietary models</p>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-2">
+            <button
+              type="submit"
+              id="save-settings-byok-keys-btn"
+              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-colors flex items-center space-x-1.5"
+            >
+              <Check className="w-3.5 h-3.5" />
+              <span>Save BYOK Credentials</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Supabase PostgreSQL Database Integration Section */}
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="flex items-center space-x-2.5">
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-600">
+              <Database className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-slate-900">Supabase PostgreSQL Database</h2>
+              <p className="text-xs text-slate-500">Production-ready cloud database storage & connection pooling</p>
+            </div>
+          </div>
+          <span className="inline-flex items-center space-x-1 text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200/60 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span>Supabase Ready</span>
+          </span>
+        </div>
+
+        <p className="text-xs text-slate-600 leading-relaxed">
+          Nomi AI includes native PostgreSQL pooling and 1-click schema migration for Supabase. You can connect your cloud database simply by specifying your Supabase URI in <code className="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-slate-800">backend/.env</code>:
+        </p>
+
+        <div className="p-3 bg-slate-900 text-slate-200 font-mono text-xs rounded-xl overflow-x-auto">
+          DATABASE_URL="postgresql://postgres.[PROJECT_REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?sslmode=require"
+        </div>
+
+        <div className="flex items-center space-x-4 pt-1 text-xs">
+          <span className="text-slate-500">
+            DDL Migration file: <code className="font-semibold text-slate-700">backend/supabase_schema.sql</code>
+          </span>
+        </div>
       </div>
 
       {/* Profile Overview */}

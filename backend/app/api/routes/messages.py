@@ -72,9 +72,13 @@ async def send_message(
         for m in all_past_messages
     ]
 
-    # 3. Call active AI provider (Local Ollama, Local OpenAI, Built-in, or Gemini)
+    # 3. Call requested AI provider with BYOK support
     try:
-        ai_provider = get_ai_provider()
+        ai_provider = get_ai_provider(
+            provider_type=msg_in.provider,
+            model=msg_in.model,
+            api_key=msg_in.api_key,
+        )
         assistant_reply_text = await ai_provider.generate_response(
             system_prompt=system_prompt,
             messages=history_payload

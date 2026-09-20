@@ -56,12 +56,12 @@ export interface Message {
   conversation_id: string;
   role: 'user' | 'assistant' | 'system';
   content: string;
+  image_url?: string;
   created_at: string;
 }
 
 export interface Evaluation {
   id: string;
-  user_id: string;
   persona_id: string;
   test_case: string;
   response: string;
@@ -74,10 +74,17 @@ export interface Evaluation {
   created_at: string;
 }
 
-export interface OllamaModel {
+export interface ModelCatalogItem {
   name: string;
-  size: number;
-  modified_at?: string;
+  provider: string;
+  provider_name: string;
+  model: string;
+  label: string;
+  tag: string;
+  badge: string;
+  requires_key: boolean;
+  key_param?: string;
+  description: string;
 }
 
 export interface ModelStatus {
@@ -88,7 +95,7 @@ export interface ModelStatus {
     connected: boolean;
     version: string;
     host: string;
-    models: OllamaModel[];
+    models: string[];
   };
   builtin_local: {
     available: boolean;
@@ -107,3 +114,22 @@ export interface PopularModel {
   recommended: boolean;
 }
 
+export interface BYOKApiKeys {
+  gemini_api_key?: string;
+  openai_api_key?: string;
+  anthropic_api_key?: string;
+  deepseek_api_key?: string;
+  groq_api_key?: string;
+  mistral_api_key?: string;
+  openrouter_api_key?: string;
+  perplexity_api_key?: string;
+}
+
+export interface ImageGenerateResponse {
+  url: string;
+  provider: string;
+  prompt: string;
+  width?: number;
+  height?: number;
+  status: string;
+}

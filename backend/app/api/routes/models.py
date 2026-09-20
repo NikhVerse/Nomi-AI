@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 from app.core.dependencies import get_current_user
 from app.db.models import User
-from app.services.ai.factory import provider_manager, get_ai_provider
+from app.services.ai.factory import provider_manager, SUPPORTED_PROVIDERS
 from app.services.ai.ollama import OllamaProvider
 from app.core.config import settings
 
@@ -13,56 +13,209 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/models", tags=["AI Models & Providers"])
 
-POPULAR_LOCAL_MODELS = [
+UNIVERSAL_MODEL_CATALOG = [
+    # Google Gemini
     {
-        "name": "qwen2.5:0.5b",
-        "label": "Qwen 2.5 (0.5B)",
-        "size": "~397 MB",
-        "description": "Ultra-lightweight & lightning-fast. Ideal for any laptop or desktop GPU.",
-        "recommended": True
+        "provider": "gemini",
+        "provider_name": "Google Gemini",
+        "model": "gemini-2.0-flash",
+        "label": "Gemini 2.0 Flash",
+        "tag": "Google",
+        "badge": "Fast & Smart",
+        "requires_key": True,
+        "key_param": "gemini_api_key",
+        "description": "Next-gen multimodal model with lightning speed and 1M context window."
     },
+    {
+        "provider": "gemini",
+        "provider_name": "Google Gemini",
+        "model": "gemini-1.5-pro",
+        "label": "Gemini 1.5 Pro",
+        "tag": "Google",
+        "badge": "High Reasoning",
+        "requires_key": True,
+        "key_param": "gemini_api_key",
+        "description": "State-of-the-art reasoning for complex coding and deep analysis."
+    },
+    # OpenAI / ChatGPT
+    {
+        "provider": "openai",
+        "provider_name": "OpenAI ChatGPT",
+        "model": "gpt-4o",
+        "label": "GPT-4o (Omni)",
+        "tag": "OpenAI",
+        "badge": "Flagship",
+        "requires_key": True,
+        "key_param": "openai_api_key",
+        "description": "OpenAI's flagship conversational and reasoning model."
+    },
+    {
+        "provider": "openai",
+        "provider_name": "OpenAI ChatGPT",
+        "model": "gpt-4o-mini",
+        "label": "GPT-4o Mini",
+        "tag": "OpenAI",
+        "badge": "Affordable & Fast",
+        "requires_key": True,
+        "key_param": "openai_api_key",
+        "description": "Fast, high-quality, lightweight model for everyday conversations."
+    },
+    {
+        "provider": "openai",
+        "provider_name": "OpenAI ChatGPT",
+        "model": "o3-mini",
+        "label": "o3 Mini Reasoning",
+        "tag": "OpenAI",
+        "badge": "Reasoning",
+        "requires_key": True,
+        "key_param": "openai_api_key",
+        "description": "Deliberative reasoning model optimized for STEM and system design."
+    },
+    # Anthropic Claude
+    {
+        "provider": "claude",
+        "provider_name": "Anthropic Claude",
+        "model": "claude-3-5-sonnet-20241022",
+        "label": "Claude 3.5 Sonnet",
+        "tag": "Anthropic",
+        "badge": "Top Human Tone",
+        "requires_key": True,
+        "key_param": "anthropic_api_key",
+        "description": "Industry benchmark for natural prose, nuanced tone, and advanced coding."
+    },
+    {
+        "provider": "claude",
+        "provider_name": "Anthropic Claude",
+        "model": "claude-3-5-haiku-20241022",
+        "label": "Claude 3.5 Haiku",
+        "tag": "Anthropic",
+        "badge": "Ultra Responsive",
+        "requires_key": True,
+        "key_param": "anthropic_api_key",
+        "description": "Blazing fast inference with human-level conversational fluency."
+    },
+    # DeepSeek
+    {
+        "provider": "deepseek",
+        "provider_name": "DeepSeek",
+        "model": "deepseek-chat",
+        "label": "DeepSeek V3",
+        "tag": "DeepSeek",
+        "badge": "Open Weights SOTA",
+        "requires_key": True,
+        "key_param": "deepseek_api_key",
+        "description": "Massive 671B MoE model delivering frontier-class dialogue at low cost."
+    },
+    {
+        "provider": "deepseek",
+        "provider_name": "DeepSeek",
+        "model": "deepseek-reasoner",
+        "label": "DeepSeek R1 (Reasoning)",
+        "tag": "DeepSeek",
+        "badge": "Deep Thought",
+        "requires_key": True,
+        "key_param": "deepseek_api_key",
+        "description": "Open reasoning powerhouse with step-by-step chain of thought."
+    },
+    # Groq
+    {
+        "provider": "groq",
+        "provider_name": "Groq",
+        "model": "llama-3.3-70b-versatile",
+        "label": "Groq Llama 3.3 (70B)",
+        "tag": "Groq",
+        "badge": "500+ tok/s",
+        "requires_key": True,
+        "key_param": "groq_api_key",
+        "description": "Extreme speed LPU inference with Meta's flagship 70B parameter model."
+    },
+    # Mistral AI
+    {
+        "provider": "mistral",
+        "provider_name": "Mistral AI",
+        "model": "mistral-large-latest",
+        "label": "Mistral Large 2",
+        "tag": "Mistral",
+        "badge": "Multilingual",
+        "requires_key": True,
+        "key_param": "mistral_api_key",
+        "description": "European flagship LLM with exceptional precision and character adherence."
+    },
+    # OpenRouter
+    {
+        "provider": "openrouter",
+        "provider_name": "OpenRouter",
+        "model": "meta-llama/llama-3.3-70b-instruct",
+        "label": "OpenRouter Universal",
+        "tag": "OpenRouter",
+        "badge": "Unified Gateway",
+        "requires_key": True,
+        "key_param": "openrouter_api_key",
+        "description": "Access any open or commercial model through a single unified key."
+    },
+    # Perplexity
+    {
+        "provider": "perplexity",
+        "provider_name": "Perplexity",
+        "model": "sonar",
+        "label": "Perplexity Sonar",
+        "tag": "Perplexity",
+        "badge": "Search-Grounded",
+        "requires_key": True,
+        "key_param": "perplexity_api_key",
+        "description": "Factual conversational model with built-in search grounding."
+    },
+    # Ollama Local
     {
         "name": "llama3.2:1b",
-        "label": "Llama 3.2 (1B)",
-        "size": "~1.3 GB",
-        "description": "Meta's official compact model. High-speed reasoning with zero API cost.",
-        "recommended": True
+        "provider": "ollama",
+        "provider_name": "Local Ollama",
+        "model": "llama3.2:1b",
+        "label": "Ollama Llama 3.2 (1B)",
+        "tag": "Local",
+        "badge": "Private & Free",
+        "requires_key": False,
+        "description": "Runs completely locally on your hardware with 0 network calls."
     },
     {
-        "name": "llama3.2:3b",
-        "label": "Llama 3.2 (3B)",
-        "size": "~2.0 GB",
-        "description": "Powerful 3B parameter model from Meta with balanced quality & speed.",
-        "recommended": False
+        "name": "qwen2.5:0.5b",
+        "provider": "ollama",
+        "provider_name": "Local Ollama",
+        "model": "qwen2.5:0.5b",
+        "label": "Ollama Qwen 2.5 (0.5B)",
+        "tag": "Local",
+        "badge": "Ultra Lightweight",
+        "requires_key": False,
+        "description": "Runs on any laptop GPU/CPU with instantaneous latency."
     },
+    # Built-in Local Offline Engine
     {
-        "name": "phi3:mini",
-        "label": "Microsoft Phi-3 Mini (3.8B)",
-        "size": "~2.2 GB",
-        "description": "Exceptional reasoning and code generation in a compact footprint.",
-        "recommended": False
-    },
-    {
-        "name": "mistral:7b",
-        "label": "Mistral (7B)",
-        "size": "~4.1 GB",
-        "description": "The gold standard open-weights instruction model for complex tasks.",
-        "recommended": False
+        "name": "builtin-dialogue",
+        "provider": "builtin_local",
+        "provider_name": "Offline Engine",
+        "model": "builtin-dialogue",
+        "label": "Built-in Offline Engine",
+        "tag": "Offline",
+        "badge": "Zero Setup",
+        "requires_key": False,
+        "description": "Built-in natural dialogue engine. No API keys, zero downloads, 100% offline."
     }
 ]
+
+# Ensure every model has 'name' attribute populated
+for m in UNIVERSAL_MODEL_CATALOG:
+    if "name" not in m:
+        m["name"] = m["model"]
 
 class ProviderSelectRequest(BaseModel):
     provider: str
     model: Optional[str] = None
     host: Optional[str] = None
 
-class PullModelRequest(BaseModel):
-    model: str
-
 @router.get("/status")
 async def get_models_status(current_user: User = Depends(get_current_user)):
     """
-    Returns live connectivity status for local and free model providers.
+    Returns live connectivity status for local and cloud providers.
     """
     ollama = OllamaProvider(host=provider_manager.active_host, model=provider_manager.active_model)
     ollama_health = await ollama.check_health()
@@ -87,17 +240,22 @@ async def get_models_status(current_user: User = Depends(get_current_user)):
         }
     }
 
+@router.get("/catalog")
+def get_model_catalog():
+    """Returns catalog of all available models across 10+ providers."""
+    return UNIVERSAL_MODEL_CATALOG
+
 @router.get("/popular")
 def get_popular_models():
-    """Returns catalog of top free local models."""
-    return POPULAR_LOCAL_MODELS
+    """Returns catalog for backward compatibility."""
+    return UNIVERSAL_MODEL_CATALOG
 
 @router.post("/select")
 def select_model_provider(
     req: ProviderSelectRequest,
     current_user: User = Depends(get_current_user)
 ):
-    """Switches the active provider, model, or host."""
+    """Switches default active provider, model, or host."""
     try:
         provider_manager.set_active_provider(
             provider_type=req.provider,
@@ -105,36 +263,11 @@ def select_model_provider(
             host=req.host
         )
         return {
+            "status": "success",
             "success": True,
             "active_provider": provider_manager.active_provider_type,
             "active_model": provider_manager.active_model,
             "active_host": provider_manager.active_host
         }
     except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-
-@router.post("/pull")
-async def pull_ollama_model(
-    req: PullModelRequest,
-    current_user: User = Depends(get_current_user)
-):
-    """Initiates an asynchronous model pull via local Ollama daemon."""
-    model_name = req.model.strip()
-    host = provider_manager.active_host
-
-    try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            resp = await client.post(
-                f"{host}/api/pull",
-                json={"name": model_name, "stream": False},
-                timeout=10.0
-            )
-            return {"status": "initiated", "model": model_name}
-    except httpx.ConnectError:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"Local Ollama server is not running on {host}. Run 'ollama serve' first."
-        )
-    except Exception as e:
-        # If timeout because download is in progress, that's normal for big models
-        return {"status": "downloading", "model": model_name, "note": str(e)}
+        raise HTTPException(status_code=400, detail=str(e))
