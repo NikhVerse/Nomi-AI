@@ -297,17 +297,17 @@ export const PersonaBuilder: React.FC<PersonaBuilderProps> = ({
       {/* Grid: Form on Left, Live Prompt Preview on Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Form (7 columns) */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* 1. Basic Information */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
+        <div className="lg:col-span-7 space-y-5">
+          {/* Card 1: Identity & Purpose */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
             <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
               <User className="w-4 h-4 text-indigo-600" />
-              <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
-                Basic Info
+              <h2 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                Identity & Purpose
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
                 <label htmlFor="persona-name-input" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1 flex items-center space-x-1.5">
                   <Bot className="w-3.5 h-3.5 text-slate-400" />
@@ -320,7 +320,7 @@ export const PersonaBuilder: React.FC<PersonaBuilderProps> = ({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. CareerForge"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
                 />
               </div>
 
@@ -335,8 +335,8 @@ export const PersonaBuilder: React.FC<PersonaBuilderProps> = ({
                   required
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  placeholder="e.g. AI/ML Career Mentor"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                  placeholder="e.g. Senior Code Mentor"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
                 />
               </div>
             </div>
@@ -351,33 +351,33 @@ export const PersonaBuilder: React.FC<PersonaBuilderProps> = ({
                 type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Short description of this persona"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                placeholder="Core role context..."
+                className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
               />
             </div>
 
             <div>
               <label htmlFor="persona-obj-input" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1 flex items-center space-x-1.5">
                 <Target className="w-3.5 h-3.5 text-slate-400" />
-                <span>Objective</span>
+                <span>Primary Objective</span>
               </label>
               <textarea
                 id="persona-obj-input"
                 rows={2}
                 value={objective}
                 onChange={(e) => setObjective(e.target.value)}
-                placeholder="What user goal does this persona solve?"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                placeholder="What goal does this persona solve?"
+                className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors resize-none"
               />
             </div>
           </div>
 
-          {/* 2. Personality & Tone */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
+          {/* Card 2: Voice, Tone & Capabilities */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
             <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
               <Smile className="w-4 h-4 text-indigo-600" />
-              <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
-                Voice & Tone
+              <h2 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                Voice, Tone & Skills
               </h2>
             </div>
 
@@ -385,7 +385,7 @@ export const PersonaBuilder: React.FC<PersonaBuilderProps> = ({
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
                 Personality Traits
               </label>
-              <div className="flex flex-wrap gap-2 mb-3">
+              <div className="flex flex-wrap gap-1.5 mb-2.5">
                 {PRESET_PERSONALITIES.map((trait) => {
                   const selected = personality.includes(trait);
                   return (
@@ -393,231 +393,224 @@ export const PersonaBuilder: React.FC<PersonaBuilderProps> = ({
                       key={trait}
                       type="button"
                       onClick={() => togglePersonality(trait)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors flex items-center space-x-1 ${
+                      className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all flex items-center space-x-1 ${
                         selected
-                          ? 'bg-indigo-50 border-indigo-300 text-indigo-700 font-semibold'
+                          ? 'bg-indigo-50 border-indigo-300 text-indigo-700 font-semibold shadow-2xs'
                           : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
                       }`}
                     >
-                      {selected && <Check className="w-3.5 h-3.5 text-indigo-600" />}
+                      {selected && <Check className="w-3 h-3 text-indigo-600" />}
                       <span>{trait}</span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* Custom Trait Input */}
               <div className="flex space-x-2">
                 <input
                   type="text"
                   value={customTrait}
                   onChange={(e) => setCustomTrait(e.target.value)}
                   placeholder="Custom trait..."
-                  className="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="flex-1 px-3 py-1.5 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <button
                   type="button"
                   onClick={addCustomTrait}
-                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium border border-slate-200"
+                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold border border-slate-200"
                 >
                   Add
                 </button>
               </div>
             </div>
 
-            <div>
-              <label htmlFor="persona-tone-select" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1 flex items-center space-x-1.5">
-                <Volume2 className="w-3.5 h-3.5 text-slate-400" />
-                <span>Communication Tone</span>
-              </label>
-              <select
-                id="persona-tone-select"
-                value={tone}
-                onChange={(e) => setTone(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
-              >
-                {PRESET_TONES.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+              <div>
+                <label htmlFor="persona-tone-select" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1 flex items-center space-x-1.5">
+                  <Volume2 className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Communication Tone</span>
+                </label>
+                <select
+                  id="persona-tone-select"
+                  value={tone}
+                  onChange={(e) => setTone(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
+                >
+                  {PRESET_TONES.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1 flex items-center space-x-1.5">
+                  <Tag className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Domain Expertise</span>
+                </label>
+                <div className="flex space-x-1.5">
+                  <input
+                    type="text"
+                    value={newExpertise}
+                    onChange={(e) => setNewExpertise(e.target.value)}
+                    placeholder="Add skill..."
+                    className="flex-1 px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={addExpertiseTag}
+                    className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold border border-slate-200"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {expertise.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {expertise.map((item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200"
+                  >
+                    <Tag className="w-3 h-3 text-slate-400 mr-1" />
+                    <span>{item}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeExpertiseTag(item)}
+                      className="ml-1 text-slate-400 hover:text-slate-700"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
                 ))}
-              </select>
-            </div>
+              </div>
+            )}
           </div>
 
-          {/* 3. Expertise */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
+          {/* Card 3: Behavioral Rules & Guardrails */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
             <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
-              <Tag className="w-4 h-4 text-indigo-600" />
-              <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
-                Expertise Areas
+              <CheckCircle2 className="w-4 h-4 text-indigo-600" />
+              <h2 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                Behavioral Rules & Guardrails
               </h2>
             </div>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {expertise.map((item) => (
-                <span
-                  key={item}
-                  className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200"
-                >
-                  <Tag className="w-3 h-3 text-slate-400 mr-1" />
-                  <span>{item}</span>
-                  <button
-                    type="button"
-                    onClick={() => removeExpertiseTag(item)}
-                    className="ml-1.5 text-slate-400 hover:text-slate-700"
+
+            {/* Behavioral Rules */}
+            <div>
+              <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-2">
+                Behavioral Rules ({rules.length})
+              </span>
+              <div className="space-y-1.5 mb-2">
+                {rules.map((rule, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-800"
                   >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                </span>
-              ))}
-            </div>
-
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                value={newExpertise}
-                onChange={(e) => setNewExpertise(e.target.value)}
-                placeholder="Add domain tag (e.g. FastAPI, Python)..."
-                className="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              <button
-                type="button"
-                onClick={addExpertiseTag}
-                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium border border-slate-200"
-              >
-                Add
-              </button>
-            </div>
-          </div>
-
-          {/* 4. Behavioral Rules */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-indigo-600" />
-                <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
-                  Behavioral Rules
-                </h2>
-              </div>
-              <span className="text-xs text-slate-400">Positive guidelines</span>
-            </div>
-
-            <div className="space-y-2">
-              {rules.map((rule, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-800"
-                >
-                  <div className="flex items-start space-x-2 mr-2">
-                    <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0 mt-0.5" />
-                    <span>{rule}</span>
+                    <div className="flex items-start space-x-2 mr-2">
+                      <Check className="w-3.5 h-3.5 text-indigo-600 shrink-0 mt-0.5" />
+                      <span>{rule}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeRule(idx)}
+                      className="text-slate-400 hover:text-rose-600 p-0.5 shrink-0"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => removeRule(idx)}
-                    className="text-slate-400 hover:text-rose-600 p-1 shrink-0"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex space-x-2 pt-1">
-              <input
-                type="text"
-                value={newRule}
-                onChange={(e) => setNewRule(e.target.value)}
-                placeholder="Add rule (e.g. Always explain the why)..."
-                className="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              <button
-                type="button"
-                onClick={addRule}
-                className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-medium border border-indigo-200"
-              >
-                Add Rule
-              </button>
-            </div>
-          </div>
-
-          {/* 5. Restrictions (Guardrails) */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div className="flex items-center space-x-2">
-                <ShieldAlert className="w-4 h-4 text-rose-500" />
-                <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
-                  Safety Guardrails
-                </h2>
+                ))}
               </div>
-              <span className="text-xs text-rose-400">Strict boundaries</span>
-            </div>
-
-            <div className="space-y-2">
-              {restrictions.map((res, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between p-2.5 bg-rose-50/40 rounded-lg border border-rose-100 text-xs text-slate-800"
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  value={newRule}
+                  onChange={(e) => setNewRule(e.target.value)}
+                  placeholder="Add positive guideline..."
+                  className="flex-1 px-3 py-1.5 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={addRule}
+                  className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-semibold border border-indigo-200"
                 >
-                  <div className="flex items-start space-x-2 mr-2">
-                    <Shield className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
-                    <span>{res}</span>
+                  Add
+                </button>
+              </div>
+            </div>
+
+            {/* Safety Guardrails */}
+            <div className="pt-2 border-t border-slate-100">
+              <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-2 flex items-center space-x-1.5">
+                <ShieldAlert className="w-3.5 h-3.5 text-rose-500" />
+                <span>Safety Guardrails ({restrictions.length})</span>
+              </span>
+              <div className="space-y-1.5 mb-2">
+                {restrictions.map((res, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2 bg-rose-50/40 rounded-xl border border-rose-100 text-xs text-slate-800"
+                  >
+                    <div className="flex items-start space-x-2 mr-2">
+                      <Shield className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
+                      <span>{res}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeRestriction(idx)}
+                      className="text-slate-400 hover:text-rose-600 p-0.5 shrink-0"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => removeRestriction(idx)}
-                    className="text-slate-400 hover:text-rose-600 p-1 shrink-0"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              ))}
+                ))}
+              </div>
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  value={newRestriction}
+                  onChange={(e) => setNewRestriction(e.target.value)}
+                  placeholder="Add strict restriction..."
+                  className="flex-1 px-3 py-1.5 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={addRestriction}
+                  className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-xs font-semibold border border-rose-200"
+                >
+                  Add
+                </button>
+              </div>
             </div>
 
-            <div className="flex space-x-2 pt-1">
-              <input
-                type="text"
-                value={newRestriction}
-                onChange={(e) => setNewRestriction(e.target.value)}
-                placeholder="Add guardrail (e.g. Do not fabricate facts)..."
-                className="flex-1 px-3 py-1.5 border border-slate-300 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              <button
-                type="button"
-                onClick={addRestriction}
-                className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg text-xs font-medium border border-rose-200"
-              >
-                Add Guardrail
-              </button>
-            </div>
-          </div>
-
-          {/* 6. Response Preferences */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
-            <div className="flex items-center space-x-2 border-b border-slate-100 pb-3">
-              <Sliders className="w-4 h-4 text-indigo-600" />
-              <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
-                Output Preferences
-              </h2>
-            </div>
-            <div className="space-y-2">
-              {PRESET_PREFERENCES.map((pref) => {
-                const checked = preferences.includes(pref);
-                return (
-                  <label
-                    key={pref}
-                    className="flex items-center space-x-2.5 text-xs text-slate-700 cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={checked}
-                      onChange={() => togglePreference(pref)}
-                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4"
-                    />
-                    <span>{pref}</span>
-                  </label>
-                );
-              })}
+            {/* Output Preferences */}
+            <div className="pt-2 border-t border-slate-100">
+              <span className="text-xs font-semibold text-slate-700 uppercase tracking-wider block mb-2 flex items-center space-x-1.5">
+                <Sliders className="w-3.5 h-3.5 text-indigo-600" />
+                <span>Output Preferences</span>
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {PRESET_PREFERENCES.map((pref) => {
+                  const checked = preferences.includes(pref);
+                  return (
+                    <label
+                      key={pref}
+                      className="flex items-center space-x-2 text-xs text-slate-700 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => togglePreference(pref)}
+                        className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-3.5 h-3.5"
+                      />
+                      <span>{pref}</span>
+                    </label>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

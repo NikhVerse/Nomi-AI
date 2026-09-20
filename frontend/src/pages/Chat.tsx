@@ -220,12 +220,12 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
   }
 
   return (
-    <div className="flex h-[calc(100vh-6.5rem)] bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs">
+    <div className="flex h-[calc(100vh-6.5rem)] bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
       {/* Left Chat Sidebar (Conversations List) */}
       <div className="w-72 border-r border-slate-200 flex flex-col bg-slate-50/70 shrink-0">
         {/* Persona Selector Dropdown */}
         <div className="p-3 border-b border-slate-200">
-          <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">
             Active Persona
           </label>
           <select
@@ -235,7 +235,7 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
               const p = personas.find((item) => item.id === e.target.value);
               if (p) setSelectedPersona(p);
             }}
-            className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
           >
             {personas.map((p) => (
               <option key={p.id} value={p.id}>
@@ -250,10 +250,10 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
           <button
             id="new-chat-btn"
             onClick={() => selectedPersona && startNewConversation(selectedPersona.id, true)}
-            className="w-full flex items-center justify-center space-x-2 py-2 px-3 bg-white hover:bg-slate-100 text-slate-800 text-xs font-medium rounded-lg border border-slate-200 transition-colors shadow-2xs"
+            className="w-full flex items-center justify-center space-x-1.5 py-2 px-3 bg-white hover:bg-slate-100 text-slate-800 text-xs font-semibold rounded-xl border border-slate-200 transition-colors shadow-2xs"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>New Conversation</span>
+            <span>New Chat</span>
           </button>
         </div>
 
@@ -268,7 +268,7 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
                 <div
                   key={conv.id}
                   onClick={() => setActiveConversation(conv)}
-                  className={`group flex items-center justify-between px-3 py-2 rounded-lg text-xs cursor-pointer transition-colors ${
+                  className={`group flex items-center justify-between px-3 py-2 rounded-xl text-xs cursor-pointer transition-colors ${
                     isActive
                       ? 'bg-indigo-50 text-indigo-900 font-semibold border border-indigo-200/60'
                       : 'text-slate-700 hover:bg-slate-200/50'

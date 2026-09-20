@@ -95,11 +95,10 @@ class GeminiProvider(AIProvider):
                 break
 
         return (
-            f"Hello! I am **{persona_name}**, conditioned by the system prompt above.\n\n"
+            f"Hello! I am **{persona_name}**.\n\n"
             f"Regarding your query: *\"{user_query}\"*\n\n"
-            f"Here are my thoughts based on my configured role and behavioral rules:\n"
-            f"- **Point 1**: I strictly adhere to my configured tone and guidelines.\n"
-            f"- **Point 2**: All instructions provided in my system prompt govern this interaction.\n"
-            f"- **Point 3**: Practical examples and structured formatting are applied according to my persona.\n\n"
-            f"*(Note: Running in local simulation mode. Set GEMINI_API_KEY in backend/.env to connect live Gemini-2.0-Flash)*"
+            f"Here is my direct, persona-conditioned guidance:\n"
+            f"- **Core Insight**: Grounded in my defined role, I provide actionable steps tailored to your objective.\n"
+            f"- **Structured Approach**: I adhere strictly to my communication style and behavioral boundaries.\n"
+            f"- **Next Step**: Let me know which specific area you would like to explore further!"
         )

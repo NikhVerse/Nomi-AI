@@ -125,31 +125,31 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((persona) => (
             <div
               key={persona.id}
-              className="bg-white rounded-xl border border-slate-200 p-5 hover:border-slate-300 hover:shadow-xs transition-all flex flex-col justify-between"
+              className="bg-white rounded-2xl border border-slate-200 p-5 hover:border-slate-300 hover:shadow-xs transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div>
-                    <h3 className="font-semibold text-slate-900 text-base">{persona.name}</h3>
+                    <h3 className="font-semibold text-slate-900 text-sm">{persona.name}</h3>
                     <p className="text-xs font-medium text-indigo-600">{persona.role}</p>
                   </div>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-slate-100 text-slate-700">
                     v{persona.current_version}
                   </span>
                 </div>
 
                 <p className="text-xs text-slate-600 line-clamp-2 mb-3 leading-relaxed">
-                  {persona.description || persona.objective || 'No description provided.'}
+                  {persona.description || persona.objective || 'Configured AI assistant.'}
                 </p>
 
                 {/* Tone and traits */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  <span className="text-xs font-medium px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-100">
-                    Tone: {persona.tone}
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  <span className="text-xs font-medium px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-100/60">
+                    {persona.tone}
                   </span>
                   {persona.expertise?.slice(0, 2).map((exp) => (
                     <span
@@ -162,7 +162,7 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
+              <div className="pt-3.5 border-t border-slate-100 flex flex-col gap-3">
                 <div className="flex items-center justify-between text-xs text-slate-500">
                   <div className="flex items-center space-x-1">
                     <MessageSquare className="w-3.5 h-3.5 text-slate-400" />
@@ -174,10 +174,10 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1.5">
                   <button
                     onClick={() => onNavigate('chat', persona.id)}
-                    className="flex-1 py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium rounded-lg text-center transition-colors flex items-center justify-center space-x-1.5"
+                    className="flex-1 py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl text-center transition-colors flex items-center justify-center space-x-1.5"
                   >
                     <MessageSquare className="w-3.5 h-3.5" />
                     <span>Chat</span>
@@ -185,31 +185,31 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
                   <button
                     onClick={() => setInspectorPersona(persona)}
                     title="View System Prompt"
-                    className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors border border-slate-200"
+                    className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors border border-slate-200/80"
                   >
-                    <Terminal className="w-4 h-4" />
+                    <Terminal className="w-3.5 h-3.5 text-indigo-600" />
                   </button>
                   <button
                     onClick={() => onNavigate('evaluations', persona.id)}
                     title="Run Evaluations"
-                    className="p-2 bg-slate-100 hover:bg-slate-200 text-indigo-600 rounded-lg transition-colors border border-slate-200"
+                    className="p-2 bg-slate-100 hover:bg-slate-200 text-indigo-600 rounded-xl transition-colors border border-slate-200/80"
                   >
-                    <Sparkles className="w-4 h-4" />
+                    <Sparkles className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => onEditPersona(persona)}
                     title="Edit Persona"
-                    className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors border border-slate-200"
+                    className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition-colors border border-slate-200/80"
                   >
-                    <Edit2 className="w-4 h-4" />
+                    <Edit2 className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleDelete(persona.id, persona.name)}
                     disabled={deletingId === persona.id}
                     title="Delete Persona"
-                    className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-colors border border-rose-200 disabled:opacity-50"
+                    className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl transition-colors border border-rose-200/80 disabled:opacity-50"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>

@@ -99,21 +99,21 @@ export const Settings: React.FC = () => {
       </div>
 
       {/* Profile Overview */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-5">
-        <div className="flex items-center space-x-2 text-sm font-semibold text-slate-900 border-b border-slate-100 pb-3">
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-5">
+        <div className="flex items-center space-x-2 text-xs font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-3">
           <UserIcon className="w-4 h-4 text-indigo-600" />
           <span>Profile Information</span>
         </div>
 
         {profileSuccess && (
-          <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs rounded-lg flex items-center space-x-2">
+          <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs rounded-xl flex items-center space-x-2">
             <Check className="w-4 h-4" />
-            <span>Profile name updated successfully.</span>
+            <span>Profile updated successfully.</span>
           </div>
         )}
 
         {profileError && (
-          <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg flex items-center space-x-2">
+          <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center space-x-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{profileError}</span>
           </div>
@@ -128,9 +128,9 @@ export const Settings: React.FC = () => {
               type="email"
               disabled
               value={user?.email || ''}
-              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-500 cursor-not-allowed"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-500 cursor-not-allowed"
             />
-            <p className="text-xs text-slate-400 mt-1">Email address is tied to your tenant account.</p>
+            <p className="text-xs text-slate-400 mt-1">Managed by tenant account.</p>
           </div>
 
           <div>
@@ -142,18 +142,18 @@ export const Settings: React.FC = () => {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
 
           <div className="flex items-center justify-between pt-2">
             <span className="text-xs text-slate-400">
-              Account created: {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
+              Joined {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
             </span>
             <button
               type="submit"
               disabled={savingProfile}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg shadow-xs transition-colors disabled:opacity-60"
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-colors disabled:opacity-60"
             >
               {savingProfile ? 'Saving...' : 'Save Name'}
             </button>
@@ -162,22 +162,22 @@ export const Settings: React.FC = () => {
       </div>
 
       {/* Password & Security */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-5">
-        <div className="flex items-center space-x-2 text-sm font-semibold text-slate-900 border-b border-slate-100 pb-3">
+      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-5">
+        <div className="flex items-center space-x-2 text-xs font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-3">
           <Shield className="w-4 h-4 text-indigo-600" />
-          <span>Change Password</span>
+          <span>Security</span>
         </div>
 
         {passwordSuccess && (
-          <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs rounded-lg flex items-center space-x-2">
+          <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs rounded-xl flex items-center space-x-2">
             <Check className="w-4 h-4" />
             <span>Password updated securely.</span>
           </div>
         )}
 
         {passwordError && (
-          <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg flex items-center space-x-2">
-            <AlertCircle className="w-4 h-4" />
+          <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center space-x-2">
+            <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{passwordError}</span>
           </div>
         )}
@@ -192,7 +192,7 @@ export const Settings: React.FC = () => {
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
 
@@ -206,7 +206,7 @@ export const Settings: React.FC = () => {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Minimum 8 characters"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
 
@@ -220,7 +220,7 @@ export const Settings: React.FC = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Re-enter new password"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
 
@@ -228,7 +228,7 @@ export const Settings: React.FC = () => {
             <button
               type="submit"
               disabled={savingPassword}
-              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium rounded-lg shadow-xs transition-colors disabled:opacity-60"
+              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl shadow-xs transition-colors disabled:opacity-60"
             >
               {savingPassword ? 'Updating...' : 'Update Password'}
             </button>
@@ -237,14 +237,14 @@ export const Settings: React.FC = () => {
       </div>
 
       {/* Logout Option */}
-      <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
         <div>
           <h3 className="text-sm font-semibold text-slate-900">Sign Out</h3>
-          <p className="text-xs text-slate-500">Log out of your current session on this device.</p>
+          <p className="text-xs text-slate-500">End your active session on this device.</p>
         </div>
         <button
           onClick={logout}
-          className="inline-flex items-center space-x-2 px-4 py-2 border border-rose-200 text-rose-700 hover:bg-rose-50 rounded-lg text-xs font-medium transition-colors"
+          className="inline-flex items-center space-x-1.5 px-4 py-2 border border-rose-200 text-rose-700 hover:bg-rose-50 rounded-xl text-xs font-semibold transition-colors"
         >
           <LogOut className="w-3.5 h-3.5" />
           <span>Sign Out</span>
