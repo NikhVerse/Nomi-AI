@@ -7,9 +7,10 @@ import {
   Trash2,
   AlertCircle,
   Loader2,
-  Terminal,
   Eye,
-  Check
+  Check,
+  Copy,
+  Sparkles
 } from 'lucide-react';
 
 interface PersonaBuilderProps {
@@ -86,6 +87,8 @@ export const PersonaBuilder: React.FC<PersonaBuilderProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [livePreviewPrompt, setLivePreviewPrompt] = useState<string>('');
   const [showPreviewMobile, setShowPreviewMobile] = useState(false);
+  const [previewMode, setPreviewMode] = useState<'structured' | 'raw'>('structured');
+  const [promptCopied, setPromptCopied] = useState(false);
 
   // Dynamic Prompt preview compiler
   useEffect(() => {
@@ -575,23 +578,185 @@ export const PersonaBuilder: React.FC<PersonaBuilderProps> = ({
 
         {/* Right Sticky Preview (5 columns) */}
         <div className={`lg:col-span-5 lg:sticky lg:top-6 ${showPreviewMobile ? 'block' : 'hidden lg:block'}`}>
-          <div className="bg-slate-900 rounded-xl border border-slate-800 shadow-md p-5 flex flex-col text-slate-100">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
-              <div className="flex items-center space-x-2 text-xs font-semibold text-indigo-400 uppercase tracking-wider">
-                <Terminal className="w-4 h-4" />
-                <span>Live System Prompt Preview</span>
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs flex flex-col overflow-hidden">
+            {/* Header */}
+            <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100/80 flex items-center justify-center text-indigo-600">
+                  <Sparkles className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-xs font-semibold text-slate-900">System Prompt</span>
+                    <span className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      <span>Live Sync</span>
+                    </span>
+                  </div>
+                </div>
               </div>
-              <span className="text-[11px] px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">
-                Dynamic Compiler
-              </span>
+
+              {/* View Toggle & Copy Button */}
+              <div className="flex items-center space-x-2">
+                <div className="bg-slate-200/60 p-0.5 rounded-lg flex items-center text-xs">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode('structured')}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all ${
+                      previewMode === 'structured'
+                        ? 'bg-white text-slate-900 shadow-2xs font-semibold'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Structured
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode('raw')}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all ${
+                      previewMode === 'raw'
+                        ? 'bg-white text-slate-900 shadow-2xs font-semibold'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Raw Prompt
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(livePreviewPrompt);
+                    setPromptCopied(true);
+                    setTimeout(() => setPromptCopied(false), 2000);
+                  }}
+                  title="Copy Prompt"
+                  className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors"
+                >
+                  {promptCopied ? (
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5" />
+                  )}
+                </button>
+              </div>
             </div>
 
-            <p className="text-[11px] text-slate-400 mb-3">
-              As you edit your persona parameters, the backend prompt compiler deterministically constructs this structured system instruction.
-            </p>
+            {/* Preview Body */}
+            {previewMode === 'structured' ? (
+              <div className="p-4 space-y-3 max-h-[560px] overflow-y-auto text-xs">
+                {/* Identity & Role */}
+                <div className="p-3 bg-slate-50/70 rounded-xl border border-slate-200/70 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Identity & Role</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-medium border border-indigo-100/60">
+                      {role || 'Configured Role'}
+                    </span>
+                  </div>
+                  <div className="font-semibold text-slate-900 text-sm">{name || 'Unnamed Persona'}</div>
+                  {description && (
+                    <p className="text-slate-600 text-[11px] leading-relaxed pt-0.5">{description}</p>
+                  )}
+                </div>
 
-            <div className="max-h-[600px] overflow-y-auto font-mono text-[11px] leading-relaxed text-slate-200 whitespace-pre-wrap bg-slate-950/60 p-4 rounded-lg border border-slate-800/80 select-all">
-              {livePreviewPrompt}
+                {/* Objective */}
+                {objective && (
+                  <div className="p-3 bg-slate-50/70 rounded-xl border border-slate-200/70 space-y-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Primary Objective</span>
+                    <p className="text-slate-700 text-[11px] leading-relaxed italic">"{objective}"</p>
+                  </div>
+                )}
+
+                {/* Voice & Tone */}
+                <div className="p-3 bg-slate-50/70 rounded-xl border border-slate-200/70 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Voice & Tone</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-slate-200/70 text-slate-700 font-medium">
+                      Tone: {tone}
+                    </span>
+                  </div>
+                  {personality.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-0.5">
+                      {personality.map((t) => (
+                        <span key={t} className="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-[11px] text-slate-700 font-medium shadow-2xs">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Expertise */}
+                {expertise.length > 0 && (
+                  <div className="p-3 bg-slate-50/70 rounded-xl border border-slate-200/70 space-y-1.5">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Domain Focus</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {expertise.map((e) => (
+                        <span key={e} className="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-[11px] text-slate-800 font-medium shadow-2xs">
+                          {e}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Behavioral Rules */}
+                {rules.length > 0 && (
+                  <div className="p-3 bg-slate-50/70 rounded-xl border border-slate-200/70 space-y-1.5">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Behavioral Rules ({rules.length})</span>
+                    <ul className="space-y-1 text-[11px] text-slate-700">
+                      {rules.map((r, i) => (
+                        <li key={i} className="flex items-start space-x-1.5">
+                          <span className="text-indigo-600 font-bold">•</span>
+                          <span>{r}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Restrictions */}
+                {restrictions.length > 0 && (
+                  <div className="p-3 bg-rose-50/40 rounded-xl border border-rose-200/50 space-y-1.5">
+                    <span className="text-[10px] font-bold text-rose-500 uppercase tracking-wider">Safety Guardrails ({restrictions.length})</span>
+                    <ul className="space-y-1 text-[11px] text-slate-700">
+                      {restrictions.map((res, i) => (
+                        <li key={i} className="flex items-start space-x-1.5">
+                          <span className="text-rose-500 font-bold">•</span>
+                          <span>{res}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Response Preferences */}
+                {preferences.length > 0 && (
+                  <div className="p-3 bg-slate-50/70 rounded-xl border border-slate-200/70 space-y-1.5">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Output Preferences</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {preferences.map((p) => (
+                        <span key={p} className="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-[11px] text-slate-700 shadow-2xs">
+                          {p}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Raw View */
+              <div className="p-4 bg-slate-900 flex-1 flex flex-col">
+                <div className="max-h-[500px] overflow-y-auto dark-scrollbar font-mono text-[11px] leading-relaxed text-slate-200 whitespace-pre-wrap select-all">
+                  {livePreviewPrompt}
+                </div>
+              </div>
+            )}
+
+            {/* Footer */}
+            <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span>{livePreviewPrompt.trim().split(/\s+/).filter(Boolean).length} words • ~{Math.round(livePreviewPrompt.trim().split(/\s+/).filter(Boolean).length * 1.33)} tokens</span>
+              <span className="text-[10px] text-slate-400">Gemini system_instruction</span>
             </div>
           </div>
         </div>
