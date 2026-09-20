@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { Bot, AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import { BrandLogo } from '../components/common/BrandLogo';
 
 interface LoginProps {
   onNavigateToRegister: () => void;
@@ -34,8 +35,8 @@ export const Login: React.FC<LoginProps> = ({ onNavigateToRegister }) => {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-600 text-white mb-4 shadow-sm">
-          <Bot className="w-6 h-6" />
+        <div className="inline-flex items-center justify-center mb-4">
+          <BrandLogo size={48} />
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-slate-900">
           Nomi AI

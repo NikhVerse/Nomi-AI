@@ -25,6 +25,10 @@
   }
 }
 
+html {
+  font-size: 17px; /* Increased 1 point (16px -> 17px) for high readability, crisp accessibility and clear user experience */
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: #f8fafc;
@@ -33,6 +37,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   min-height: 100vh;
+  line-height: 1.55;
 }
 
 /* Custom scrollbars */
@@ -54,7 +59,7 @@ body {
   background: #94a3b8;
 }
 
-/* Dark container scrollbar to prevent ugly white scrollbar glitch */
+/* Dark container scrollbar to prevent white scrollbar glitch */
 .dark-scrollbar::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -65,10 +70,10 @@ body {
 }
 
 .dark-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 9999px;
 }
 
 .dark-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.35);
 }

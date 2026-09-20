@@ -317,7 +317,7 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
             </div>
             <div>
               <h2 className="text-sm font-semibold text-slate-900">{selectedPersona?.name}</h2>
-              <p className="text-[11px] text-slate-500">{selectedPersona?.role}</p>
+              <p className="text-xs text-slate-500">{selectedPersona?.role}</p>
             </div>
           </div>
 
@@ -327,8 +327,8 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
               onClick={() => setIsInspectorOpen(true)}
               className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 transition-colors"
             >
-              <Terminal className="w-3.5 h-3.5 text-slate-500" />
-              <span>View System Prompt</span>
+              <Terminal className="w-3.5 h-3.5 text-indigo-600" />
+              <span>System Prompt</span>
             </button>
           </div>
         </div>
@@ -344,7 +344,7 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
               <Bot className="w-10 h-10 mb-2 stroke-1" />
               <p className="text-sm font-medium text-slate-700">No messages yet</p>
               <p className="text-xs text-slate-400 max-w-xs mt-1">
-                Ask {selectedPersona?.name} anything to test their persona conditioning and rules.
+                Send a message to test {selectedPersona?.name}'s persona conditioning.
               </p>
             </div>
           ) : (
@@ -365,7 +365,7 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
                     {isUser ? <UserIcon className="w-3.5 h-3.5" /> : <Bot className="w-3.5 h-3.5" />}
                   </div>
                   <div
-                    className={`max-w-[75%] rounded-xl px-4 py-2.5 text-xs leading-relaxed whitespace-pre-wrap ${
+                    className={`max-w-[75%] rounded-xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
                       isUser
                         ? 'bg-slate-900 text-white'
                         : 'bg-slate-100 text-slate-800 border border-slate-200/80'
@@ -410,8 +410,8 @@ export const Chat: React.FC<ChatProps> = ({ initialPersonaId, onNavigateToBuilde
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={`Ask ${selectedPersona?.name || 'persona'} something... (Enter to send, Shift+Enter for new line)`}
-                className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none max-h-32 transition-colors"
+                placeholder={`Message ${selectedPersona?.name || 'persona'}...`}
+                className="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none max-h-32 transition-colors"
               />
             </div>
             <button

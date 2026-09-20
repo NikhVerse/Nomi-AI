@@ -70,7 +70,7 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
             Personas
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Create, configure, and inspect custom AI personas and their system instructions.
+            Manage and configure custom AI personas
           </p>
         </div>
         <button
@@ -90,7 +90,7 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search personas by name, role, or keywords..."
+          placeholder="Search personas..."
           className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
         />
       </div>
@@ -107,12 +107,12 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
             <Bot className="w-6 h-6" />
           </div>
           <h3 className="text-base font-semibold text-slate-900 mb-1">
-            {search ? 'No matching personas found' : 'No personas yet'}
+            {search ? 'No matching personas' : 'No personas yet'}
           </h3>
           <p className="text-sm text-slate-500 max-w-sm mx-auto mb-5">
             {search
-              ? 'Try modifying your search criteria.'
-              : 'Create your first persona and configure its custom system prompt.'}
+              ? 'Try modifying your search terms.'
+              : 'Create your first custom AI persona to get started.'}
           </p>
           {!search && (
             <button
@@ -137,7 +137,7 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
                     <h3 className="font-semibold text-slate-900 text-base">{persona.name}</h3>
                     <p className="text-xs font-medium text-indigo-600">{persona.role}</p>
                   </div>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">
                     v{persona.current_version}
                   </span>
                 </div>
@@ -148,13 +148,13 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
 
                 {/* Tone and traits */}
                 <div className="flex flex-wrap gap-1.5 mb-4">
-                  <span className="text-[10px] font-medium px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-100">
+                  <span className="text-xs font-medium px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-100">
                     Tone: {persona.tone}
                   </span>
                   {persona.expertise?.slice(0, 2).map((exp) => (
                     <span
                       key={exp}
-                      className="text-[10px] font-medium px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md"
+                      className="text-xs font-medium px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md"
                     >
                       {exp}
                     </span>
@@ -177,28 +177,29 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => onNavigate('chat', persona.id)}
-                    className="flex-1 py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium rounded-lg text-center transition-colors"
+                    className="flex-1 py-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium rounded-lg text-center transition-colors flex items-center justify-center space-x-1.5"
                   >
-                    Chat
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    <span>Chat</span>
                   </button>
                   <button
                     onClick={() => setInspectorPersona(persona)}
                     title="View System Prompt"
-                    className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors border border-slate-200"
+                    className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors border border-slate-200"
                   >
                     <Terminal className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => onNavigate('evaluations', persona.id)}
                     title="Run Evaluations"
-                    className="p-1.5 bg-slate-100 hover:bg-slate-200 text-indigo-600 rounded-lg transition-colors border border-slate-200"
+                    className="p-2 bg-slate-100 hover:bg-slate-200 text-indigo-600 rounded-lg transition-colors border border-slate-200"
                   >
                     <Sparkles className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => onEditPersona(persona)}
                     title="Edit Persona"
-                    className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors border border-slate-200"
+                    className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors border border-slate-200"
                   >
                     <Edit2 className="w-4 h-4" />
                   </button>
@@ -206,7 +207,7 @@ export const Personas: React.FC<PersonasProps> = ({ onNavigate, onEditPersona })
                     onClick={() => handleDelete(persona.id, persona.name)}
                     disabled={deletingId === persona.id}
                     title="Delete Persona"
-                    className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-colors border border-rose-200 disabled:opacity-50"
+                    className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-colors border border-rose-200 disabled:opacity-50"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

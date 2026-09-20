@@ -12,6 +12,8 @@ import {
   Plus
 } from 'lucide-react';
 
+import { BrandLogo } from '../common/BrandLogo';
+
 interface AppLayoutProps {
   children: React.ReactNode;
   activeTab: string;
@@ -54,9 +56,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, activeTab, onNav
         {/* Brand / Logo */}
         <div className="h-16 px-6 flex items-center justify-between border-b border-slate-100">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-base shadow-xs">
-              N
-            </div>
+            <BrandLogo size={30} />
             <span className="font-semibold text-lg tracking-tight text-slate-900">
               Nomi AI
             </span>
@@ -134,9 +134,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, activeTab, onNav
         {/* Mobile Header Bar */}
         <header className="md:hidden h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-2.5">
-            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">
-              N
-            </div>
+            <BrandLogo size={28} />
             <span className="font-semibold text-base text-slate-900">Nomi AI</span>
           </div>
           <button

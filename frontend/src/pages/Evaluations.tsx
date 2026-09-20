@@ -8,7 +8,12 @@ import {
   AlertCircle,
   Loader2,
   ChevronRight,
-  Info
+  CheckCircle2,
+  Volume2,
+  Target,
+  Sliders,
+  FileText,
+  PenTool
 } from 'lucide-react';
 
 const PREDEFINED_TEST_CASES = [
@@ -130,26 +135,46 @@ export const Evaluations: React.FC<EvaluationsProps> = ({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-slate-200 pb-5">
-        <div className="flex items-center space-x-2.5 mb-1">
-          <div className="p-1.5 rounded-lg bg-indigo-50 text-indigo-600">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            Persona Evaluation
-          </h1>
-        </div>
-        <p className="text-sm text-slate-500">
-          Demonstrate and verify how well the AI persona adheres to its system prompt instructions, tone, and guardrails.
-        </p>
-      </div>
-
-      {/* Methodology notice */}
-      <div className="p-4 bg-slate-100/70 border border-slate-200 rounded-xl flex items-start space-x-3 text-xs text-slate-600">
-        <Info className="w-4 h-4 text-indigo-600 mt-0.5 shrink-0" />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
-          <span className="font-semibold text-slate-900">Transparent Rubric Methodology: </span>
-          Evaluations score across 5 objective dimensions (Instruction Adherence, Persona Consistency, Tone, Relevance, and Preference Compliance) on a 1.0 - 5.0 scale using an AI-assisted evaluation judge.
+          <div className="flex items-center space-x-2.5">
+            <div className="p-1.5 rounded-lg bg-indigo-50 text-indigo-600">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              Persona Evaluation
+            </h1>
+          </div>
+          <p className="mt-1 text-sm text-slate-500">
+            Automated persona adherence & quality rubric testing
+          </p>
+        </div>
+
+        {/* 5-Metric Pill Strip */}
+        <div className="flex items-center flex-wrap gap-1.5 bg-white p-1.5 rounded-xl border border-slate-200 shadow-2xs">
+          <span className="inline-flex items-center space-x-1 px-2 py-1 rounded-lg bg-slate-50 text-slate-700 text-xs font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Adherence</span>
+          </span>
+          <span className="inline-flex items-center space-x-1 px-2 py-1 rounded-lg bg-slate-50 text-slate-700 text-xs font-medium">
+            <Bot className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Persona</span>
+          </span>
+          <span className="inline-flex items-center space-x-1 px-2 py-1 rounded-lg bg-slate-50 text-slate-700 text-xs font-medium">
+            <Volume2 className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Tone</span>
+          </span>
+          <span className="inline-flex items-center space-x-1 px-2 py-1 rounded-lg bg-slate-50 text-slate-700 text-xs font-medium">
+            <Target className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Relevance</span>
+          </span>
+          <span className="inline-flex items-center space-x-1 px-2 py-1 rounded-lg bg-slate-50 text-slate-700 text-xs font-medium">
+            <Sliders className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Format</span>
+          </span>
+          <span className="text-[11px] font-mono text-slate-400 px-2">
+            1.0–5.0
+          </span>
         </div>
       </div>
 
@@ -157,8 +182,9 @@ export const Evaluations: React.FC<EvaluationsProps> = ({
         {/* Left Column: Test Runner (5 cols) */}
         <div className="lg:col-span-5 bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-5">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-              Select Persona
+            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center space-x-1.5">
+              <Bot className="w-3.5 h-3.5 text-slate-400" />
+              <span>Target Persona</span>
             </label>
             <select
               id="evaluation-persona-select"
@@ -178,8 +204,9 @@ export const Evaluations: React.FC<EvaluationsProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-              Predefined Test Cases
+            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center space-x-1.5">
+              <FileText className="w-3.5 h-3.5 text-slate-400" />
+              <span>Test Cases</span>
             </label>
             <div className="space-y-2">
               {PREDEFINED_TEST_CASES.map((tc, idx) => (
@@ -208,8 +235,9 @@ export const Evaluations: React.FC<EvaluationsProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
-              Or Custom Test Case
+            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1 flex items-center space-x-1.5">
+              <PenTool className="w-3.5 h-3.5 text-slate-400" />
+              <span>Custom Test Prompt</span>
             </label>
             <textarea
               rows={2}
@@ -270,57 +298,74 @@ export const Evaluations: React.FC<EvaluationsProps> = ({
               {/* 5 Dimension Score Cards */}
               <div className="space-y-3.5">
                 <div>
-                  <div className="flex justify-between text-xs font-medium text-slate-700 mb-1">
-                    <span>Instruction Adherence</span>
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span className="flex items-center space-x-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>Instruction Adherence</span>
+                    </span>
                   </div>
                   {renderScoreBar(latestResult.instruction_adherence)}
                 </div>
 
                 <div>
-                  <div className="flex justify-between text-xs font-medium text-slate-700 mb-1">
-                    <span>Persona Consistency</span>
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span className="flex items-center space-x-1.5">
+                      <Bot className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>Persona Consistency</span>
+                    </span>
                   </div>
                   {renderScoreBar(latestResult.persona_consistency)}
                 </div>
 
                 <div>
-                  <div className="flex justify-between text-xs font-medium text-slate-700 mb-1">
-                    <span>Tone Consistency</span>
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span className="flex items-center space-x-1.5">
+                      <Volume2 className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>Tone Consistency</span>
+                    </span>
                   </div>
                   {renderScoreBar(latestResult.tone_consistency)}
                 </div>
 
                 <div>
-                  <div className="flex justify-between text-xs font-medium text-slate-700 mb-1">
-                    <span>Relevance</span>
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span className="flex items-center space-x-1.5">
+                      <Target className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>Relevance</span>
+                    </span>
                   </div>
                   {renderScoreBar(latestResult.relevance)}
                 </div>
 
                 <div>
-                  <div className="flex justify-between text-xs font-medium text-slate-700 mb-1">
-                    <span>Preference Compliance</span>
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1">
+                    <span className="flex items-center space-x-1.5">
+                      <Sliders className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>Preference Compliance</span>
+                    </span>
                   </div>
                   {renderScoreBar(latestResult.preference_compliance)}
                 </div>
               </div>
 
               {/* Evaluator Feedback */}
-              <div className="pt-4 border-t border-slate-100">
-                <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">
-                  Feedback & Critique
-                </h4>
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-lg text-xs leading-relaxed text-slate-700 whitespace-pre-wrap">
+              <div className="pt-4 border-t border-slate-100 space-y-2">
+                <div className="flex items-center space-x-1.5 text-xs font-semibold text-slate-900 uppercase tracking-wider">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>Feedback & Critique</span>
+                </div>
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs leading-relaxed text-slate-700 whitespace-pre-wrap">
                   {latestResult.feedback}
                 </div>
               </div>
 
-              {/* Persona Response Accordion/View */}
-              <div className="pt-2">
-                <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-2">
-                  Persona's Generated Response
-                </h4>
-                <div className="p-3.5 bg-slate-900 text-slate-100 rounded-lg text-xs leading-relaxed font-mono whitespace-pre-wrap border border-slate-800">
+              {/* Persona Response */}
+              <div className="pt-2 space-y-2">
+                <div className="flex items-center space-x-1.5 text-xs font-semibold text-slate-900 uppercase tracking-wider">
+                  <Bot className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>Generated Response</span>
+                </div>
+                <div className="p-4 bg-slate-50 text-slate-800 rounded-xl text-xs leading-relaxed whitespace-pre-wrap border border-slate-200">
                   {latestResult.response}
                 </div>
               </div>

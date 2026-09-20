@@ -94,7 +94,7 @@ export const Settings: React.FC = () => {
           Account Settings
         </h1>
         <p className="mt-1 text-sm text-slate-500">
-          Manage your personal profile, credentials, and security preferences.
+          Profile & security preferences
         </p>
       </div>
 
@@ -114,7 +114,7 @@ export const Settings: React.FC = () => {
 
         {profileError && (
           <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg flex items-center space-x-2">
-            <AlertCircle className="w-4 h-4" />
+            <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{profileError}</span>
           </div>
         )}
@@ -130,7 +130,7 @@ export const Settings: React.FC = () => {
               value={user?.email || ''}
               className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-500 cursor-not-allowed"
             />
-            <p className="text-[11px] text-slate-400 mt-1">Email address is tied to your tenant account.</p>
+            <p className="text-xs text-slate-400 mt-1">Email address is tied to your tenant account.</p>
           </div>
 
           <div>
