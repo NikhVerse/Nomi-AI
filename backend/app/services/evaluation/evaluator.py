@@ -1,7 +1,8 @@
 import json
 import logging
 from typing import Dict, Any, Optional
-from app.services.ai.gemini import GeminiProvider
+from app.services.ai.base import AIProvider
+from app.services.ai.factory import get_ai_provider
 
 logger = logging.getLogger(__name__)
 
@@ -11,8 +12,8 @@ class PersonaEvaluator:
     prompt engineering criteria using structured rubric evaluation.
     """
 
-    def __init__(self, ai_provider: Optional[GeminiProvider] = None):
-        self.ai_provider = ai_provider or GeminiProvider()
+    def __init__(self, ai_provider: Optional[AIProvider] = None):
+        self.ai_provider = ai_provider
 
     async def evaluate(self, system_prompt: str, test_case: str, response_text: str) -> Dict[str, Any]:
         """
@@ -46,32 +47,31 @@ class PersonaEvaluator:
         )
 
         try:
-            # If we have real client, invoke LLM judge
-            if self.ai_provider.client:
-                judge_response = await self.ai_provider.generate_response(
-                    system_prompt=eval_system_prompt,
-                    messages=[{"role": "user", "content": user_content}],
-                    temperature=0.2
-                )
-                
-                # Parse JSON output from model
-                clean_json = judge_response.strip()
-                if clean_json.startswith("```json"):
-                    clean_json = clean_json[7:]
-                if clean_json.startswith("```"):
-                    clean_json = clean_json[3:]
-                if clean_json.endswith("```"):
-                    clean_json = clean_json[:-3]
-                
-                parsed = json.loads(clean_json.strip())
-                return {
-                    "instruction_adherence": float(parsed.get("instruction_adherence", 4.0)),
-                    "persona_consistency": float(parsed.get("persona_consistency", 4.0)),
-                    "tone_consistency": float(parsed.get("tone_consistency", 4.0)),
-                    "relevance": float(parsed.get("relevance", 4.0)),
-                    "preference_compliance": float(parsed.get("preference_compliance", 4.0)),
-                    "feedback": str(parsed.get("feedback", "Response adheres well to the configured persona guidelines."))
-                }
+            provider = self.ai_provider or get_ai_provider()
+            judge_response = await provider.generate_response(
+                system_prompt=eval_system_prompt,
+                messages=[{"role": "user", "content": user_content}],
+                temperature=0.2
+            )
+
+            # Parse JSON output from model
+            clean_json = judge_response.strip()
+            if clean_json.startswith("```json"):
+                clean_json = clean_json[7:]
+            if clean_json.startswith("```"):
+                clean_json = clean_json[3:]
+            if clean_json.endswith("```"):
+                clean_json = clean_json[:-3]
+
+            parsed = json.loads(clean_json.strip())
+            return {
+                "instruction_adherence": float(parsed.get("instruction_adherence", 4.0)),
+                "persona_consistency": float(parsed.get("persona_consistency", 4.0)),
+                "tone_consistency": float(parsed.get("tone_consistency", 4.0)),
+                "relevance": float(parsed.get("relevance", 4.0)),
+                "preference_compliance": float(parsed.get("preference_compliance", 4.0)),
+                "feedback": str(parsed.get("feedback", "Response adheres well to the configured persona guidelines."))
+            }
         except Exception as e:
             logger.warning(f"LLM evaluation failed or unavailable: {e}. Falling back to rule-based evaluation.")
 
@@ -82,7 +82,7 @@ class PersonaEvaluator:
         """Deterministic rubric evaluation when LLM judge is not configured."""
         words = response_text.split()
         length = len(words)
-        
+
         # Relevance: does it contain test case keywords?
         test_words = set(w.lower() for w in test_case.split() if len(w) > 3)
         resp_words = set(w.lower() for w in words)
