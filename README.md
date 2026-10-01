@@ -9,7 +9,11 @@ Instead of treating prompt engineering as an ad-hoc trial, Nomi AI decomposes AI
 
 ## Platform Demo Walkthrough
 
-![Nomi AI Platform Walkthrough Demo](docs/demo.webp)
+<p align="center">
+  <img src="docs/demo.webp" alt="Nomi AI Platform Walkthrough Demo" width="100%" />
+</p>
+
+> 📽️ **Full 2-Minute Walkthrough**: If the preview above does not play automatically in your browser, you can [view or download the demo directly here](https://raw.githubusercontent.com/NikhVerse/Nomi-AI/main/docs/demo.webp).
 
 A full end-to-end demonstration showcasing:
 - **Productivity Dashboard**: Real-time persona metrics, prompt versions, and conversation counters.
