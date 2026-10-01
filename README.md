@@ -24,6 +24,46 @@ A full end-to-end demonstration showcasing:
 
 ---
 
+## Screenshots & UI Showcase
+
+### 1. Minimalist Productivity Dashboard
+Clean overview of active personas, prompt revision counters, system metrics, and quick action cards.
+<p align="center">
+  <img src="docs/screenshots/01_dashboard.png" alt="Nomi AI Dashboard" width="100%" />
+</p>
+
+### 2. Persona Builder & Live Prompt Compiler
+Configure structured dimensions—Identity, Role, Objective, Tone, Behavioral Rules, and Safety Guardrails—with real-time system prompt compilation preview.
+<p align="center">
+  <img src="docs/screenshots/02_persona_builder.png" alt="Persona Builder" width="100%" />
+</p>
+
+### 3. Contextual Chat & AI Model Routing
+Engage with persona-conditioned models (Built-in Free Engine, Local Ollama, Gemini, Claude, OpenAI) adhering to exact system instructions.
+<p align="center">
+  <img src="docs/screenshots/03_chat_interface.png" alt="Chat Interface" width="100%" />
+</p>
+
+### 4. System Prompt Inspector & Version History
+Inspect server-compiled system prompt sections, token counts, and immutable version snapshots.
+<p align="center">
+  <img src="docs/screenshots/04_prompt_inspector.png" alt="Prompt Inspector" width="100%" />
+</p>
+
+### 5. Automated 5-Metric Evaluation Benchmark
+Evaluate AI responses with objective rubric-based metrics (Instruction Adherence, Persona Consistency, Tone Consistency, Relevance, Compliance) and qualitative critique.
+<p align="center">
+  <img src="docs/screenshots/05_evaluation_suite.png" alt="Evaluation Suite" width="100%" />
+</p>
+
+### 6. Settings & AI Model Engines
+Configure offline simulation, local Ollama endpoints, OpenAI-compatible backends, and multi-model BYOK keys.
+<p align="center">
+  <img src="docs/screenshots/06_settings.png" alt="Settings & AI Engines" width="100%" />
+</p>
+
+---
+
 ## Architecture Overview
 
 
