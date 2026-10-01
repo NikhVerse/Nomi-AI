@@ -4,9 +4,24 @@ Nomi AI is a minimalist, production-grade full-stack web application designed fo
 
 Instead of treating prompt engineering as an ad-hoc trial, Nomi AI decomposes AI personas into structured, typed dimensions—identity, role, objective, personality traits, communication tone, domain expertise, behavioral rules, negative restrictions, and response preferences. It compiles them dynamically on the server into a clean system instruction, feeds them into Google Gemini via dedicated developer instructions, and evaluates instruction adherence using a transparent 5-metric rubric.
 
+
+---
+
+## Platform Demo Walkthrough
+
+![Nomi AI Platform Walkthrough Demo](docs/demo.webp)
+
+A full end-to-end demonstration showcasing:
+- **Productivity Dashboard**: Real-time persona metrics, prompt versions, and conversation counters.
+- **Dynamic Persona Builder**: Live server-side prompt compiler generating typed markdown instructions in real time.
+- **System Prompt Inspector**: Granular prompt section inspection and immutable version snapshots.
+- **Contextual Conversation**: Real-time AI chat adhering strictly to behavioral rules and tone constraints.
+- **Automated 5-Metric Evaluation Suite**: Rubric-based adherence scoring (Instruction Adherence, Persona Consistency, Tone Consistency, Relevance, Preference Compliance).
+
 ---
 
 ## Architecture Overview
+
 
 ```mermaid
 graph TD
